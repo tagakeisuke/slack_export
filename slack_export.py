@@ -67,12 +67,15 @@ def get_message(header):
                         res=response.json()
                         j_mg=deepmerge(j_mg,res)#json出力
                         for i in res["messages"]:
-                            if("user" in i):
+                            if "user" in i:
                                 user_id=i["user"]
+                                user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
+                            elif "username" in i:
+                                user_id=i["bot_id"]
+                                user_name=i["username"]
                             else:
                                 user_id=i["bot_id"]
-                            user_name=requests.get(url_user, headers=header, params={"user" : user_id}).json()
-                            user_name=user_name["user"]["name"]
+                                user_name = ""
                             ts=i["ts"]
                             date=datetime.datetime.fromtimestamp(math.floor(float(ts)))
                             text=i["text"]
@@ -88,12 +91,15 @@ def get_message(header):
                                 j_mg=deepmerge(j_mg,rep) #json出力
                                 for j, r in enumerate(rep["messages"]):
                                     if(j!=0):
-                                        if("user" in i):
+                                        if "user" in i:
                                             user_id=i["user"]
+                                            user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
+                                        elif "username" in i:
+                                            user_id=i["bot_id"]
+                                            user_name=i["username"]
                                         else:
                                             user_id=i["bot_id"]
-                                        user_name=requests.get(url_user, headers=header, params={"user" : user_id}).json()
-                                        user_name=user_name["user"]["name"]
+                                            user_name = ""
                                         date=datetime.datetime.fromtimestamp(math.floor(float(r["ts"])))
                                         text=r["text"]
                                         writer.writerow([date, user_name, user_id, "",text])
