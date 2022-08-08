@@ -67,12 +67,12 @@ def get_message(header):
                         res=response.json()
                         j_mg=deepmerge(j_mg,res)#json出力
                         for i in res["messages"]:
-                            if("user" in i):
+                            if "user" in i:
                                 user_id=i["user"]
+                                user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
                             else:
                                 user_id=i["bot_id"]
-                            user_name=requests.get(url_user, headers=header, params={"user" : user_id}).json()
-                            user_name=user_name["user"]["name"]
+                                user_name=i.get("username", "")
                             ts=i["ts"]
                             date=datetime.datetime.fromtimestamp(math.floor(float(ts)))
                             text=i["text"]
@@ -88,12 +88,12 @@ def get_message(header):
                                 j_mg=deepmerge(j_mg,rep) #json出力
                                 for j, r in enumerate(rep["messages"]):
                                     if(j!=0):
-                                        if("user" in i):
+                                        if "user" in i:
                                             user_id=i["user"]
+                                            user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
                                         else:
                                             user_id=i["bot_id"]
-                                        user_name=requests.get(url_user, headers=header, params={"user" : user_id}).json()
-                                        user_name=user_name["user"]["name"]
+                                            user_name=i.get("username", "")
                                         date=datetime.datetime.fromtimestamp(math.floor(float(r["ts"])))
                                         text=r["text"]
                                         writer.writerow([date, user_name, user_id, "",text])
@@ -122,11 +122,12 @@ def file_download(header):
             print(f"{channel_name}：ダウンロード開始")
             files = requests.get(url_fl, headers=header, params={"channel" : f"{channel_id}"}).json()
             for i in files["files"]:
+                file_id=i["id"]
                 file_name=i["name"]
                 print(f"{file_name}：ダウンロード中")
                 download_url = i["url_private"]
                 data = requests.get(download_url,headers=header ,stream=True).content
-                with codecs.open(f"./files/{channel_name}/{file_name}", mode="wb") as f:
+                with codecs.open(f"./files/{channel_name}/{file_id}_{file_name}", mode="wb") as f:
                     f.write(data)
             print(f"{channel_name}：ダウンロード完了")
             channel_name, channel_id = list.readline().replace("\n","").split("\t")
