@@ -128,11 +128,12 @@ def file_download(header):
             print(f"{channel_name}：ダウンロード開始")
             files = requests.get(url_fl, headers=header, params={"channel" : f"{channel_id}"}).json()
             for i in files["files"]:
+                file_id=i["id"]
                 file_name=i["name"]
                 print(f"{file_name}：ダウンロード中")
                 download_url = i["url_private"]
                 data = requests.get(download_url,headers=header ,stream=True).content
-                with codecs.open(f"./files/{channel_name}/{file_name}", mode="wb") as f:
+                with codecs.open(f"./files/{channel_name}/{file_id}_{file_name}", mode="wb") as f:
                     f.write(data)
             print(f"{channel_name}：ダウンロード完了")
             channel_name, channel_id = list.readline().replace("\n","").split("\t")
