@@ -12,18 +12,21 @@
 3. app名を入力（適当でok）, データをエクスポートしたいワークスペースを選択し、"Create App"をクリック。
 4. メニューから、"OAuth & Permissions" を選択。
 5. ページ下方の"Scopes"内、"User Token Scopes"に以下のスコープを追加。
+
 (必須)
 - users:read
 - channels:read
 - groups:read
 - im:read
 - mpim:read
+
 (ログ出力時は必要)
 - channels:history
 - groups:history
 - im:history
 - mpim:history
-(ファイル出力時に必要)
+
+(ファイル出力時は必要)
 - files:read
 
 6. ページ上方の"OAuth Tokens for Your Workspace" 内、"Install to Workspace" をクリックし、遷移先の画面で許可を選択。
