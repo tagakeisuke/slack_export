@@ -88,12 +88,12 @@ def get_message(header):
                                 j_mg=deepmerge(j_mg,rep) #json出力
                                 for j, r in enumerate(rep["messages"]):
                                     if(j!=0):
-                                        if "user" in i:
-                                            user_id=i["user"]
+                                        if "user" in r:
+                                            user_id=r["user"]
                                             user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
                                         else:
-                                            user_id=i["bot_id"]
-                                            user_name=i.get("username", "")
+                                            user_id=r["bot_id"]
+                                            user_name=r.get("username", "")
                                         date=datetime.datetime.fromtimestamp(math.floor(float(r["ts"])))
                                         text=r["text"]
                                         writer.writerow([date, user_name, user_id, "",text])
