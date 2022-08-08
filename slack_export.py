@@ -70,12 +70,9 @@ def get_message(header):
                             if "user" in i:
                                 user_id=i["user"]
                                 user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
-                            elif "username" in i:
-                                user_id=i["bot_id"]
-                                user_name=i["username"]
                             else:
                                 user_id=i["bot_id"]
-                                user_name = ""
+                                user_name=i.get("username", "")
                             ts=i["ts"]
                             date=datetime.datetime.fromtimestamp(math.floor(float(ts)))
                             text=i["text"]
@@ -94,12 +91,9 @@ def get_message(header):
                                         if "user" in i:
                                             user_id=i["user"]
                                             user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
-                                        elif "username" in i:
-                                            user_id=i["bot_id"]
-                                            user_name=i["username"]
                                         else:
                                             user_id=i["bot_id"]
-                                            user_name = ""
+                                            user_name=i.get("username", "")
                                         date=datetime.datetime.fromtimestamp(math.floor(float(r["ts"])))
                                         text=r["text"]
                                         writer.writerow([date, user_name, user_id, "",text])
