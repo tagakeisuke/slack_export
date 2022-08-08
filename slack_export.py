@@ -98,7 +98,7 @@ def get_message(header):
                                         text=r["text"]
                                         writer.writerow([date, user_name, user_id, "",text])
 
-                        json.dump(j_mg,json_file)
+                        json.dump(j_mg,json_file)#json出力
                         if("response_metadata" in i):
                             next_cursor = i["response_metadata"]["next_cursor"]
                             payload  = {
