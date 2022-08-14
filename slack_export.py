@@ -5,6 +5,7 @@ import datetime
 import math
 import csv
 import json
+import re
 from dictknife import deepmerge
 
 #user情報取得用  #Bot scope(users:read), User scope(users:read)
@@ -123,7 +124,7 @@ def file_download(header):
             files = requests.get(url_fl, headers=header, params={"channel" : f"{channel_id}"}).json()
             for i in files["files"]:
                 file_id=i["id"]
-                file_name=i["name"]
+                file_name = re.sub(r'[\\/:*?"<>|]+', '-', i["name"])
                 print(f"{file_name}：ダウンロード中")
                 download_url = i["url_private"]
                 data = requests.get(download_url,headers=header ,stream=True).content
