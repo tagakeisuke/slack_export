@@ -22,14 +22,14 @@ url_rp = "https://slack.com/api/conversations.replies"
 url_fl = "https://slack.com/api/files.list" 
 
 
-def channel_list(header):
+def channel_list(workspace,header):
     #チャンネル一覧の取得
     payload = {
                 "types": "public_channel, private_channel, mpim,im",
                 "exclude_archived":True
                 }
     data = requests.get(url_ch, headers=header, params=payload).json()
-    with open("channel_list.txt","w",encoding="utf-8") as list:
+    with open(f"{workspace}/channel_list.txt","w",encoding="utf-8") as list:
     #nameとidをchannellistに書き込み       
         for i in data["channels"]:
             if("name" in i):
@@ -43,11 +43,11 @@ def channel_list(header):
         print("EOF\tEOF",file=list)
 
 
-def get_message(header):
-    os.makedirs(f"csv", exist_ok=True)
-    os.makedirs(f"json", exist_ok=True)
+def get_message(workspace,header):
+    os.makedirs(f"{workspace}/csv", exist_ok=True)
+    os.makedirs(f"{workspace}/json", exist_ok=True)
     print("メッセージ出力開始")
-    with open("channel_list.txt","r",encoding="utf-8") as list:
+    with open(f"{workspace}/channel_list.txt","r",encoding="utf-8") as list:
         channel_name, channel_id = list.readline().replace("\n","").split("\t")
         while channel_name != "EOF":         
             print(f"{channel_name}：メッセージ出力中")
@@ -57,8 +57,8 @@ def get_message(header):
                         "limit"   : 200
                         }
             
-            with open(f"./json/{channel_name}.json", 'w', encoding="utf-8") as json_file:  #json出力
-                with open(f"./csv/{channel_name}.csv", 'w', encoding="utf_8_sig", newline="") as Csv:
+            with open(f"./{workspace}/json/{channel_name}.json", 'w', encoding="utf-8") as json_file:  #json出力
+                with open(f"./{workspace}/csv/{channel_name}.csv", 'w', encoding="utf_8_sig", newline="") as Csv:
                     j_mg={}
                     writer = csv.writer(Csv)
                     writer.writerow(["date", "user_name", "id", "message", "reply"])
@@ -116,10 +116,10 @@ def get_message(header):
 
 def file_download(header):
     print("ダウンロード開始")
-    with open("channel_list.txt","r",encoding="utf-8") as list:
+    with open(f"{workspace}/channel_list.txt","r",encoding="utf-8") as list:
         channel_name, channel_id = list.readline().replace("\n","").split("\t")
         while channel_name != "EOF":
-            os.makedirs(f"files/{channel_name}", exist_ok=True)
+            os.makedirs(f"{workspace}/files/{channel_name}", exist_ok=True)
             print(f"{channel_name}：ダウンロード開始")
             files = requests.get(url_fl, headers=header, params={"channel" : f"{channel_id}"}).json()
             for i in files["files"]:
@@ -128,13 +128,15 @@ def file_download(header):
                 print(f"{file_name}：ダウンロード中")
                 download_url = i["url_private"]
                 data = requests.get(download_url,headers=header ,stream=True).content
-                with codecs.open(f"./files/{channel_name}/{file_id}_{file_name}", mode="wb") as f:
+                with codecs.open(f"./{workspace}/files/{channel_name}/{file_id}_{file_name}", mode="wb") as f:
                     f.write(data)
             print(f"{channel_name}：ダウンロード完了")
             channel_name, channel_id = list.readline().replace("\n","").split("\t")
     print("ダウンロード完了")
 
 if __name__ == '__main__':
+    workspace=input("workspace>>")
+    os.makedirs(f"{workspace}", exist_ok=True)
     token=input("usertoken>>")
     header={"Authorization": "Bearer {}".format(token)}
     while(True):
