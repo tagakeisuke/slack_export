@@ -142,10 +142,10 @@ if __name__ == '__main__':
     while(True):
         task=input("\"l\": create channel list,\"m\": export messages,\"f\": export files>>")
         if(task=="l"):
-            channel_list(header=header)
+            channel_list(workspace=workspace, header=header)
         elif(task=="m"):
-            get_message(header=header)
+            get_message(workspace=workspace, header=header)
         elif(task=="f"):
-            file_download(header=header)
+            file_download(workspace=workspace, header=header)
         else:
             print("error: input \"l\", \"m\" or \"f\".")
