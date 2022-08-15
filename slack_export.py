@@ -114,7 +114,7 @@ def get_message(workspace,header):
             channel_name, channel_id = list.readline().replace("\n","").split("\t")
     print("出力完了")
 
-def file_download(header):
+def file_download(workspace,header):
     print("ダウンロード開始")
     with open(f"{workspace}/channel_list.txt","r",encoding="utf-8") as list:
         channel_name, channel_id = list.readline().replace("\n","").split("\t")
