@@ -71,9 +71,11 @@ def get_message(workspace,header):
                             if "user" in i:
                                 user_id=i["user"]
                                 user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
-                            else:
+                            elif "bot_id" in i:
                                 user_id=i["bot_id"]
                                 user_name=i.get("username", "")
+                            else:
+                                user_name=""
                             ts=i["ts"]
                             date=datetime.datetime.fromtimestamp(math.floor(float(ts)))
                             text=i["text"]
@@ -96,15 +98,20 @@ def get_message(workspace,header):
                                         if "user" in r:
                                             user_id=r["user"]
                                             user_name=(requests.get(url_user, headers=header, params={"user" : user_id}).json())["user"]["name"]
-                                        else:
+                                        elif "bot_id" in r:
                                             user_id=r["bot_id"]
                                             user_name=r.get("username", "")
+                                        else:
+                                            user_name=""
                                         date=datetime.datetime.fromtimestamp(math.floor(float(r["ts"])))
                                         text=r["text"]
                                         inputText=[date, user_name, user_id, "",text]
                                         if("files" in r):
                                             for f in r["files"]:
-                                                inputText.append(f["title"])
+                                                if "title" in f:
+                                                    inputText.append(f["title"])
+                                                else:
+                                                    inputText.append(f["file_not_found"])
                                         writer.writerow(inputText)
 
                         json.dump(j_mg,json_file)#json出力
