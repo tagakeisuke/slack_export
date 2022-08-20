@@ -85,7 +85,7 @@ def get_message(workspace,header):
                                     if "title" in f:
                                         inputText.append(f["id"]+"_"+f["title"])
                                     else:
-                                        inputText.append(f["file_not_found"])
+                                        inputText.append("file_not_found")
                                     
                             writer.writerow(inputText)
                             if("thread_ts" in i):
@@ -115,7 +115,7 @@ def get_message(workspace,header):
                                                 if "title" in f:
                                                     inputText.append(f["title"])
                                                 else:
-                                                    inputText.append(f["file_not_found"])
+                                                    inputText.append("file_not_found")
                                         writer.writerow(inputText)
 
                         json.dump(j_mg,json_file)#json出力
