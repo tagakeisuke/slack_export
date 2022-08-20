@@ -61,7 +61,7 @@ def get_message(workspace,header):
                 with open(f"./{workspace}/csv/{channel_name}.csv", 'w', encoding="utf_8_sig", newline="") as Csv:
                     j_mg={}
                     writer = csv.writer(Csv)
-                    writer.writerow(["date", "user_name", "id", "message", "reply"])
+                    writer.writerow(["date", "user_name", "id", "message", "reply","files"])
                     has_more=True
                     while(has_more==True):
                         response = requests.get(url_mg, headers=header, params=payload)
@@ -77,7 +77,11 @@ def get_message(workspace,header):
                             ts=i["ts"]
                             date=datetime.datetime.fromtimestamp(math.floor(float(ts)))
                             text=i["text"]
-                            writer.writerow([date, user_name, user_id, text])
+                            inputText=[date, user_name, user_id, text,""]
+                            if("files" in i):
+                                for f in i["files"]:
+                                    inputText.append(f["id"]+"_"+f["title"])
+                            writer.writerow(inputText)
                             if("thread_ts" in i):
                                 th_ts=i["thread_ts"]
                                 payload  = {
@@ -97,7 +101,11 @@ def get_message(workspace,header):
                                             user_name=r.get("username", "")
                                         date=datetime.datetime.fromtimestamp(math.floor(float(r["ts"])))
                                         text=r["text"]
-                                        writer.writerow([date, user_name, user_id, "",text])
+                                        inputText=[date, user_name, user_id, "",text]
+                                        if("files" in r):
+                                            for f in r["files"]:
+                                                inputText.append(f["title"])
+                                        writer.writerow(inputText)
 
                         json.dump(j_mg,json_file)#json出力
                         if("response_metadata" in i):
