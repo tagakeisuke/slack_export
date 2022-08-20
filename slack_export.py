@@ -80,7 +80,7 @@ def get_message(workspace,header):
                             inputText=[date, user_name, user_id, text,""]
                             if("files" in i):
                                 for f in i["files"]:
-                                    inputText.append(f["title"])
+                                    inputText.append(f["id"]+"_"+f["title"])
                             writer.writerow(inputText)
                             if("thread_ts" in i):
                                 th_ts=i["thread_ts"]
