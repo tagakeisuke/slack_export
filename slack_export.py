@@ -82,7 +82,11 @@ def get_message(workspace,header):
                             inputText=[date, user_name, user_id, text,""]
                             if("files" in i):
                                 for f in i["files"]:
-                                    inputText.append(f["id"]+"_"+f["title"])
+                                    if "title" in f:
+                                        inputText.append(f["id"]+"_"+f["title"])
+                                    else:
+                                        inputText.append(f["file_not_found"])
+                                    
                             writer.writerow(inputText)
                             if("thread_ts" in i):
                                 th_ts=i["thread_ts"]
