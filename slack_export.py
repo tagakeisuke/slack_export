@@ -118,18 +118,19 @@ def get_message(workspace,header):
                                                     inputText.append("file_not_found")
                                         writer.writerow(inputText)
 
+                        
+                            if("response_metadata" in i):
+                                next_cursor = i["response_metadata"]["next_cursor"]
+                                payload  = {
+                                            "channel" : f"{channel_id}",
+                                            "include_all_metadata": True,
+                                            "limit"   : 200,
+                                            "cursor"  : next_cursor
+                                            }
+                                has_more = i["has_more"]
+                            else:
+                                has_more=False
                         json.dump(j_mg,json_file)#json出力
-                        if("response_metadata" in i):
-                            next_cursor = i["response_metadata"]["next_cursor"]
-                            payload  = {
-                                        "channel" : f"{channel_id}",
-                                        "include_all_metadata": True,
-                                        "limit"   : 200,
-                                        "cursor"  : next_cursor
-                                        }
-                            has_more = i["has_more"]
-                        else:
-                            has_more=False
             channel_name, channel_id = list.readline().replace("\n","").split("\t")
     print("出力完了")
 
