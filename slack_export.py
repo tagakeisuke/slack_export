@@ -117,9 +117,10 @@ def get_message(workspace,header):
                                                 else:
                                                     inputText.append("file_not_found")
                                         writer.writerow(inputText)
+                            checker = i
 
                         json.dump(j_mg,json_file)#json出力
-                        if("response_metadata" in i):
+                        if("response_metadata" in checker):
                             next_cursor = i["response_metadata"]["next_cursor"]
                             payload  = {
                                         "channel" : f"{channel_id}",
