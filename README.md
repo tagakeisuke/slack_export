@@ -35,7 +35,7 @@
 
 ### pythonファイルの実行
 1. slack_export.py を実行。
-2. Workspace名を入力。
+2. Workspace名を入力(保存フォルダの名前になります)。
 3. Tokenの入力が求められるので、先ほど保存したTokenを入力。
 4. "l","m","f"の入力が求められるので、最初は"l"を入力。Tokenを発行した人から見ることができる範囲の全channel(private channelやDM含む)の名前とIDがchannel_list.txtに出力される。
 5. channel_list.txtを開きログやファイルをエクスポートしたいものだけ残し、他は削除する。（最下行のEOFは残してください。）
